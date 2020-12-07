@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "456683006398",
+    "firebase_url": "https://mobilewallet-7a6da.firebaseio.com",
+    "project_id": "mobilewallet-7a6da",
+    "storage_bucket": "mobilewallet-7a6da.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456683006398:android:d78c3a2d2a7b07bd3731ef",
+        "android_client_info": {
+          "package_name": "com.ouroboros.wallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456683006398-oi8hd4pv9f4ms0ihu5bp2um1c7ephv9g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ouroboros.wallet",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "456683006398-si88fn4gk27moakoch3v7ts2ptoe3ic6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyp3Rfv8qXc--zHj-g_GTEzFmRiozy-t4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456683006398-si88fn4gk27moakoch3v7ts2ptoe3ic6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "456683006398-mjnqeql4haus302diq29ib2ki1bdpo9g.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ouroboros.wallet.dev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

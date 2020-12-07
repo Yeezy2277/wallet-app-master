@@ -1,0 +1,9 @@
+{
+  "strict": {
+    "text-font-family": "SFProText-Regular",
+
+    "background-basic-color-1": "#141B23",
+    "background-basic-color-2": "#19202A",
+    "background-basic-color-3": "#293039"
+  }
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>456683006398-2o5dh8u931sei4hbdvlkoicd7s0nip7s.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.456683006398-2o5dh8u931sei4hbdvlkoicd7s0nip7s</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>456683006398-oi8hd4pv9f4ms0ihu5bp2um1c7ephv9g.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDC8jPddwtfVwCD30KkLIdeMU3fNfRO9is</string>
+	<key>GCM_SENDER_ID</key>
+	<string>456683006398</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ouroboros.wallet</string>
+	<key>PROJECT_ID</key>
+	<string>mobilewallet-7a6da</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mobilewallet-7a6da.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:456683006398:ios:e63c3d8eab59b5ee3731ef</string>
+	<key>DATABASE_URL</key>
+	<string>https://mobilewallet-7a6da.firebaseio.com</string>
+</dict>
+</plist>
