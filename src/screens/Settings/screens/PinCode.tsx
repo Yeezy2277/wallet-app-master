@@ -3,7 +3,7 @@ import { Button, Text, Layout as View } from '@ui-kitten/components'
 import { Dimensions, StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { RouteProp } from '@react-navigation/native'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { ROUTES } from '../../../setup-kit/constants/routes'
 import { SettingsStackParamsList } from '../../../navigator/SettingsStack'
 import { useKeyboard } from '../../../setup-kit/useKeyboard'
@@ -12,7 +12,7 @@ import { useAppLocales } from '../../../setup-kit/locales'
 import { StyleGuide } from '../../../StyleGuide'
 import { useAppState } from '../../../setup-kit/useAppState'
 import { api } from '../../../setup-kit/api'
-import { notify, sleep } from '../../../utils'
+import { hapticsFeedback, notify} from '../../../utils'
 import { captureError } from '../../../setup-kit/sentry'
 
 const { height } = Dimensions.get('window')
@@ -38,22 +38,48 @@ interface Props {
 }
 
 const PinCode: React.FC<Props> = ({ navigation }: Props) => {
+  const [{}, dispatch] = useAppState()
   const { keyboardOpened } = useKeyboard()
   const { STRINGS } = useAppLocales()
-  const [{ user },dispatch] = useAppState()
-  const [subject, setSubject] = React.useState('')
+  const [pin, setPin] = React.useState('')
   const [pending, setPending] = React.useState(false)
 
-  const ifFilled = subject.length
+  const ifFilled = pin.length === 4
+  const btnDelete = pin !== "Don't work"
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const reFetchProfile = async () => {
+        try {
+          const payload = await api.getProfile()
+          dispatch({ type: `FETCH_PROFILE`, payload })
+        } catch (e) {
+          captureError(`await api.getProfile() ${JSON.stringify(e)}`)
+        }
+      }
+      return () => {
+        // re-fetch user profile when screen blurred
+        reFetchProfile()
+      }
+    }, [dispatch])
+  )
 
   const submit = async () => {
+    hapticsFeedback()
+    setPending(true)
     try {
-      setPending(true)
-      const payload = await api.setPin('', '', '', '', subject, 'ru')
-      dispatch({ type: `SET_PIN`, payload })
+      await api.setPin(pin)
       setPending(false)
+      notify({
+        message: STRINGS.common.success,
+        description: '',
+        type: 'success',
+        floating: true,
+      })
+      navigation.navigate(ROUTES.PinCode)
     } catch (e) {
-      captureError(`await api.setPin('', '', '', '', subject, 'ru') ${JSON.stringify(e)}`)
+      setPending(false)
+      captureError(`await api.setPin(${pin}) ${JSON.stringify(e)}`)
       notify({
         message: STRINGS.errors.common,
         description: STRINGS.errors.tryAgain,
@@ -61,9 +87,6 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
         floating: true,
       })
     }
-  }
-  const addPin = (e:any) => {
-
   }
   return (
     <KeyboardAwareScrollView
@@ -75,15 +98,18 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
       <View style={{ flex: 1 }}>
         <View style={{ marginBottom: 24, marginTop: 15 }}>
           <Text style={styles.label}>{STRINGS.pinCode.description}</Text>
-          <Text style={styles.label}>{STRINGS.pinCode.addPin}</Text>
+          <Text style={{ fontSize: 13, lineHeight: 16, opacity: 0.7, marginBottom: 25 }}>
+            {STRINGS.pinCode.addPin}
+          </Text>
           <Input
-            placeholder={STRINGS.pinCode.addPin}
-            value={subject}
-            onChangeText={setSubject}
+            placeholder={STRINGS.pinCode.inputText}
+            value={pin}
+            onChangeText={setPin}
             disabled={pending}
+            keyboardType="number-pad"
           />
           <Button
-            style={{ height: h, borderRadius: 5, marginBottom: 'auto' }}
+            style={{ height: h, borderRadius: 5, marginBottom: 'auto', marginTop: 25 }}
             onPress={submit}
             disabled={!ifFilled || pending}
           >
@@ -92,7 +118,11 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
         </View>
         <View style={{ marginBottom: 24 }}>
           <Text style={styles.label}>{STRINGS.pinCode.deletePin}</Text>
-          <Button style={{ height: h, borderRadius: 5, marginBottom: 'auto' }} onPress={submit}>
+          <Button
+            style={{ height: h, borderRadius: 5, marginBottom: 'auto' }}
+            onPress={submit}
+            disabled={btnDelete}
+          >
             {STRINGS.pinCode.buttonDelete.toUpperCase()}
           </Button>
         </View>

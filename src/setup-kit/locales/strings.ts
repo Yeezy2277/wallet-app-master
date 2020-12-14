@@ -164,12 +164,13 @@ export interface AppLocale {
     button: string
   }
   pinCode: {
-    title: string,
-    description: string,
-    addPin: string,
-    deletePin: string,
-    buttonAdd: string,
-    buttonDelete: string,
+    title: string
+    description: string
+    inputText: string
+    addPin: string
+    deletePin: string
+    buttonAdd: string
+    buttonDelete: string
   }
   filters: {
     title: string
@@ -233,12 +234,13 @@ export const STRINGS: { [key: string]: AppLocale } = {
       button: 'Отправить',
     },
     pinCode: {
-      title: 'Настройки пин-кода',
-      description: 'Здесь вы можете установить пин-код, или же удалить его',
-      addPin: 'Добавить пин-код',
-      deletePin: 'Удалить пин-код',
-      buttonAdd: 'Добавить пин-код',
-      buttonDelete: 'Удалить пин-код',
+      title: 'Настройки ПИН-кода',
+      description: 'Здесь вы можете установить ПИН-код, или же удалить его',
+      inputText: 'ПИН-код (4 цифры)',
+      addPin: 'Добавить ПИН-код',
+      deletePin: 'Удалить ПИН-код',
+      buttonAdd: 'Добавить ПИН-код',
+      buttonDelete: 'Удалить ПИН-код',
     },
     transactionDetails: {
       title: 'О транзакции',
@@ -436,12 +438,13 @@ export const STRINGS: { [key: string]: AppLocale } = {
       button: 'Send',
     },
     pinCode: {
-      title: 'Pin-Code settings',
-      description: 'Here you can set the pin-code, or delete it',
-      addPin: 'Enter your new Pin-Code',
-      deletePin: 'Delete your Pin-Code',
-      buttonAdd: 'Add Pin-Code',
-      buttonDelete: 'Delete Pin-Code',
+      title: 'PIN-Code settings',
+      description: 'Here you can set the PIN-code, or delete it',
+      inputText: 'PIN-Code (4 digits)',
+      addPin: 'Enter your new PIN-code',
+      deletePin: 'Delete your PIN-Code',
+      buttonAdd: 'Add PIN-Code',
+      buttonDelete: 'Delete PIN-Code',
     },
     filters: {
       title: 'Filters',

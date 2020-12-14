@@ -104,31 +104,6 @@ class Api {
     )
     return resp.data
   }
-  public setPin = async (email: {
-    email: string
-    telegram: string
-    reinvest: string
-    newPassword: string
-    pin: string
-    language?: 'ru' | 'en'
-  }) => {
-    const url = `${ouroHost}/profile`
-    const resp = await axios.post<{
-      jwt: string
-      refresh: string
-      success: boolean
-      message: 'enter your pin' | 'pin was updated'
-    }>(
-      url,
-      { email, telegram, reinvest, newPassword, pin, language },
-      {
-        headers: {
-          ...defaultHeaders,
-        },
-      }
-    )
-    return resp.data
-  }
 
   public register = async ({ email, password }: { email: string; password: string }) => {
     const url = `${ouroHost}/register`
@@ -305,6 +280,21 @@ class Api {
     const resp = await axios.put<unknown>(
       url,
       { telegram },
+      {
+        headers: {
+          ...defaultHeaders,
+          ...authHeaders,
+        },
+      }
+    )
+    return resp.data
+  }
+  public setPin = async (pin: string) => {
+    const url = `${ouroHost}/profile`
+    const authHeaders = await this.authHeaders()
+    const resp = await axios.put<unknown>(
+      url,
+      { pin },
       {
         headers: {
           ...defaultHeaders,
