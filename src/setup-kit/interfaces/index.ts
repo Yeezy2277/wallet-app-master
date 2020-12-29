@@ -27,6 +27,7 @@ export interface Profile {
   email_confirmed: boolean // false
   fa_enabled: boolean // false
   telegram: string
+  pin_enabled: boolean
 }
 
 export interface Coin {

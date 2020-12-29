@@ -15,6 +15,7 @@ import {
 const defaultHeaders = {
   Accept: 'application/json',
   'Content-Type': 'application/json; charset=UTF-8',
+  'User-Agent': 'Wallet/1',
 }
 
 enum ApiErrorTypes {
@@ -289,12 +290,12 @@ class Api {
     )
     return resp.data
   }
-  public setPin = async (pin: string) => {
+  public setPin = async (pin: string, old_pin: string) => {
     const url = `${ouroHost}/profile`
     const authHeaders = await this.authHeaders()
     const resp = await axios.put<unknown>(
       url,
-      { pin },
+      { pin, old_pin },
       {
         headers: {
           ...defaultHeaders,
@@ -308,7 +309,7 @@ class Api {
   public createTx = async (data: CreateTxPayload) => {
     const url = `${ouroHost}/txs`
     const authHeaders = await this.authHeaders()
-    const resp = await axios.post<{ txhash: string }>(
+    const resp = await axios.post<{ txhash: string; pin: string }>(
       url,
       { ...data },
       {

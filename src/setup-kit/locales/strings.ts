@@ -38,7 +38,7 @@ export interface AppLocale {
     touchId: string
     notifications: string
     support: string
-    pinCode:string
+    pinCode: string
     signOut: string
   }
   transaction: {
@@ -167,8 +167,12 @@ export interface AppLocale {
     title: string
     description: string
     inputText: string
-    addPin: string
+    editPin: string
+    oldPin:string
+    newPin:string
     deletePin: string
+    addPinMessage:string
+    deletePinMessage:string
     buttonAdd: string
     buttonDelete: string
   }
@@ -237,8 +241,12 @@ export const STRINGS: { [key: string]: AppLocale } = {
       title: 'Настройки ПИН-кода',
       description: 'Здесь вы можете установить ПИН-код, или же удалить его',
       inputText: 'ПИН-код (4 цифры)',
-      addPin: 'Добавить ПИН-код',
+      editPin: 'Изменить ПИН-код',
+      oldPin: 'Старый ПИН-код',
+      newPin: 'Новый ПИН-код',
       deletePin: 'Удалить ПИН-код',
+      addPinMessage:'Добавить ПИН-код (4 цифры)',
+      deletePinMessage:'ПИН-код не установлен',
       buttonAdd: 'Добавить ПИН-код',
       buttonDelete: 'Удалить ПИН-код',
     },
@@ -441,7 +449,11 @@ export const STRINGS: { [key: string]: AppLocale } = {
       title: 'PIN-Code settings',
       description: 'Here you can set the PIN-code, or delete it',
       inputText: 'PIN-Code (4 digits)',
-      addPin: 'Enter your new PIN-code',
+      editPin: 'Enter your new PIN-code',
+      oldPin: 'Old PIN-code',
+      newPin: 'New PIN-code',
+      addPinMessage:'Add PIN-code (4 digits)',
+      deletePinMessage:'PIN-code is not used',
       deletePin: 'Delete your PIN-Code',
       buttonAdd: 'Add PIN-Code',
       buttonDelete: 'Delete PIN-Code',
