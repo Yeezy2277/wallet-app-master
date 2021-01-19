@@ -4,6 +4,7 @@ export interface AppLocale {
     loginRequired: string
     loginRequiredDescription: string
     wrongPassword: string
+    wrongPin: string
     invalidCode: string
     codeIsDifferent: string
     common: string
@@ -170,6 +171,7 @@ export interface AppLocale {
     editPin: string
     oldPin:string
     newPin:string
+    wait: string
     deletePin: string
     addPinMessage:string
     deletePinMessage:string
@@ -203,6 +205,7 @@ export const STRINGS: { [key: string]: AppLocale } = {
       loginRequired: 'Необходимо выполнить вход',
       loginRequiredDescription: 'Время сессии истекло',
       wrongPassword: 'Неправильный пароль',
+      wrongPin: "Неправильно введён старый ПИН-код.",
       codeIsDifferent: 'Коды не совпадают',
       common: 'Что-то пошло не так',
       tryAgain: 'Попробуйте еще раз',
@@ -240,6 +243,7 @@ export const STRINGS: { [key: string]: AppLocale } = {
     pinCode: {
       title: 'Настройки ПИН-кода',
       description: 'Здесь вы можете установить ПИН-код, или же удалить его',
+      wait: 'Подождите пожалуйста. Загружаются данные с сервера',
       inputText: 'ПИН-код (4 цифры)',
       editPin: 'Изменить ПИН-код',
       oldPin: 'Старый ПИН-код',
@@ -397,6 +401,7 @@ export const STRINGS: { [key: string]: AppLocale } = {
       loginRequired: 'Login required',
       loginRequiredDescription: 'Session expired',
       wrongPassword: 'Invalid password',
+      wrongPin: "Invalid old PIN-code",
       common: 'Something went wrong',
       codeIsDifferent: 'Codes are different',
       tryAgain: 'Please try again',
@@ -447,6 +452,7 @@ export const STRINGS: { [key: string]: AppLocale } = {
     },
     pinCode: {
       title: 'PIN-Code settings',
+      wait: 'Wait please. Loading data from the server',
       description: 'Here you can set the PIN-code, or delete it',
       inputText: 'PIN-Code (4 digits)',
       editPin: 'Enter your new PIN-code',

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Text, Layout as View } from '@ui-kitten/components'
-import { Dimensions, StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet, Image } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { RouteProp } from '@react-navigation/native'
@@ -44,7 +44,9 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
   const { STRINGS } = useAppLocales()
   const [pin, setPin] = React.useState('')
   const [oldPin, setOldPin] = React.useState('')
+  const [delPin, setDelPin] = React.useState('')
   const [pending, setPending] = React.useState(false)
+  const [isInitialized, setIsInitialized] = React.useState(false)
   const [isPin, setIsPin] = React.useState(false) // state of pin_enabled
 
   const ifFilled = pin.length === 4
@@ -53,7 +55,9 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
     try {
       api.getProfile().then((r) => {
         const payload = r
+        console.log(r)
         setIsPin(payload.pin_enabled)
+        setIsInitialized(true)
       })
     } catch (e) {
       captureError(`await api.getProfile() ${JSON.stringify(e)}`)
@@ -64,7 +68,7 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
     setPending(true)
     try {
       if (typeSubmit === 'SUBMIT_ADD') {
-        const payload = await api.setPin(pin, '')
+        const payload = await api.setPin(pin)
         dispatch({ type: `SET_PIN`, payload })
         setIsPin(true)
       } else if (typeSubmit === 'SUBMIT_EDIT') {
@@ -73,9 +77,8 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
         setIsPin(true)
         console.log(payload)
       } else if (typeSubmit === 'SUBMIT_DELETE') {
-        await api.setPin('', '')
+        await api.setPin('', delPin)
         const payload = await api.getProfile()
-        payload.pin_enabled = false
         dispatch({ type: `FETCH_PROFILE`, payload })
         setIsPin(false)
       }
@@ -91,7 +94,7 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
       setPending(false)
       captureError(`await api.setPin(${pin}) ${JSON.stringify(e)}, ${isPin}`)
       notify({
-        message: STRINGS.errors.common,
+        message: STRINGS.errors.wrongPin,
         description: STRINGS.errors.tryAgain,
         type: 'danger',
         floating: true,
@@ -117,7 +120,14 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
       <View style={{ flex: 1 }}>
         <View style={{ marginBottom: 24, marginTop: 15 }}>
           <Text style={styles.label}>{STRINGS.pinCode.description}</Text>
-          {!isPin ? (
+          {!isInitialized ? (
+            <View>
+              <Text style={{ fontSize: 13, lineHeight: 16, opacity: 0.7, marginBottom: 25 }}>
+                {STRINGS.pinCode.wait}
+              </Text>
+              <Image source={{ uri: 'https://i.gifer.com/ZZ5H.gif' }} />
+            </View>
+          ) : !isPin ? (
             <View>
               <Text style={{ fontSize: 13, lineHeight: 16, opacity: 0.7, marginBottom: 25 }}>
                 {STRINGS.pinCode.addPinMessage}
@@ -174,6 +184,13 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
                 <Text style={{ fontSize: 13, lineHeight: 16, opacity: 0.7, marginTop: 25 }}>
                   {STRINGS.pinCode.deletePin}
                 </Text>
+                <Input
+                  placeholder={STRINGS.pinCode.oldPin}
+                  value={delPin}
+                  onChangeText={setDelPin}
+                  disabled={pending}
+                  keyboardType="number-pad"
+                />
                 <Button
                   style={{ height: h, borderRadius: 5, marginBottom: 'auto', marginTop: 15 }}
                   onPress={submitDelete}

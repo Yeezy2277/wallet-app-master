@@ -290,7 +290,7 @@ class Api {
     )
     return resp.data
   }
-  public setPin = async (pin: string, old_pin: string) => {
+  public setPin = async (pin: string, old_pin?: string) => {
     const url = `${ouroHost}/profile`
     const authHeaders = await this.authHeaders()
     const resp = await axios.put<unknown>(
