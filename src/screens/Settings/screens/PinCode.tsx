@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Text, Layout as View } from '@ui-kitten/components'
-import { Dimensions, StyleSheet, Image } from 'react-native'
+import { Dimensions, StyleSheet, Image, ScrollView } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { RouteProp } from '@react-navigation/native'
@@ -49,7 +49,9 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
   const [isInitialized, setIsInitialized] = React.useState(false)
   const [isPin, setIsPin] = React.useState(false) // state of pin_enabled
 
-  const ifFilled = pin.length === 4
+  const ifFilledAdd = pin.length === 4
+  const ifFilledEdit = pin.length === 4 && oldPin.length === 4
+  const ifFilledDelete = delPin.length === 4
   // getting data from server
   React.useEffect(() => {
     try {
@@ -71,17 +73,22 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
         const payload = await api.setPin(pin)
         dispatch({ type: `SET_PIN`, payload })
         setIsPin(true)
+        setPin('')
       } else if (typeSubmit === 'SUBMIT_EDIT') {
         const payload = await api.setPin(pin, oldPin)
         dispatch({ type: `SET_PIN`, payload })
         setIsPin(true)
+        setOldPin('')
+        setPin('')
         console.log(payload)
       } else if (typeSubmit === 'SUBMIT_DELETE') {
         await api.setPin('', delPin)
         const payload = await api.getProfile()
         dispatch({ type: `FETCH_PROFILE`, payload })
         setIsPin(false)
+        setDelPin('')
       }
+
       setPending(false)
       notify({
         message: STRINGS.common.success,
@@ -117,7 +124,7 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
       showsVerticalScrollIndicator={false}
       scrollEnabled={keyboardOpened}
     >
-      <View style={{ flex: 1 }}>
+      <ScrollView keyboardShouldPersistTaps="always" style={{ flex: 1 }}>
         <View style={{ marginBottom: 24, marginTop: 15 }}>
           <Text style={styles.label}>{STRINGS.pinCode.description}</Text>
           {!isInitialized ? (
@@ -129,30 +136,32 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
             </View>
           ) : !isPin ? (
             <View>
-              <Text style={{ fontSize: 13, lineHeight: 16, opacity: 0.7, marginBottom: 25 }}>
+              <Text style={{ fontSize: 13, lineHeight: 16, opacity: 0.7, marginBottom: 15 }}>
                 {STRINGS.pinCode.addPinMessage}
               </Text>
-              <Input
-                placeholder={STRINGS.pinCode.inputText}
-                value={pin}
-                onChangeText={setPin}
-                disabled={pending}
-                keyboardType="number-pad"
-              />
+              <ScrollView keyboardShouldPersistTaps="handled">
+                <Input
+                  placeholder={STRINGS.pinCode.inputText}
+                  value={pin}
+                  onChangeText={setPin}
+                  disabled={pending}
+                  keyboardType="number-pad"
+                />
+              </ScrollView>
               <Button
-                style={{ height: h, borderRadius: 5, marginBottom: 'auto', marginTop: 25 }}
+                style={{ height: h, borderRadius: 5, marginBottom: 'auto', marginTop: 15 }}
                 onPress={submitAdd}
-                disabled={!ifFilled || pending}
+                disabled={!ifFilledAdd || pending}
               >
                 {STRINGS.pinCode.buttonAdd.toUpperCase()}
               </Button>
-              <Text style={{ fontSize: 13, lineHeight: 16, opacity: 0.7, marginTop: 20 }}>
+              <Text style={{ fontSize: 13, lineHeight: 16, opacity: 0.7, marginTop: 15 }}>
                 {STRINGS.pinCode.deletePinMessage}
               </Text>
             </View>
           ) : (
             <View>
-              <Text style={{ fontSize: 13, lineHeight: 16, opacity: 0.7, marginBottom: 25 }}>
+              <Text style={{ fontSize: 13, lineHeight: 16, opacity: 0.7, marginBottom: 15 }}>
                 {STRINGS.pinCode.editPin}
               </Text>
               <View>
@@ -164,7 +173,7 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
                   keyboardType="number-pad"
                 />
               </View>
-              <View style={{ marginTop: 20 }}>
+              <View style={{ marginTop: 15 }}>
                 <Input
                   placeholder={STRINGS.pinCode.newPin}
                   value={pin}
@@ -174,14 +183,22 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
                 />
               </View>
               <Button
-                style={{ height: h, borderRadius: 5, marginBottom: 'auto', marginTop: 5 }}
+                style={{ height: h, borderRadius: 5, marginBottom: 'auto', marginTop: 15 }}
                 onPress={submitEdit}
-                disabled={!ifFilled || pending}
+                disabled={!ifFilledEdit || pending}
               >
                 {STRINGS.pinCode.editPin.toUpperCase()}
               </Button>
               <View style={{ marginBottom: 24 }}>
-                <Text style={{ fontSize: 13, lineHeight: 16, opacity: 0.7, marginTop: 25 }}>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    lineHeight: 16,
+                    opacity: 0.7,
+                    marginTop: 25,
+                    marginBottom: 15,
+                  }}
+                >
                   {STRINGS.pinCode.deletePin}
                 </Text>
                 <Input
@@ -194,6 +211,7 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
                 <Button
                   style={{ height: h, borderRadius: 5, marginBottom: 'auto', marginTop: 15 }}
                   onPress={submitDelete}
+                  disabled={!ifFilledDelete || pending}
                 >
                   {STRINGS.pinCode.buttonDelete.toUpperCase()}
                 </Button>
@@ -201,7 +219,7 @@ const PinCode: React.FC<Props> = ({ navigation }: Props) => {
             </View>
           )}
         </View>
-      </View>
+      </ScrollView>
     </KeyboardAwareScrollView>
   )
 }
