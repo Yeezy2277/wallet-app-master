@@ -81,6 +81,7 @@ export const Header = ({ title }: { title: string }) => {
 
 export const Pins = ({ code }: { code: string }) => {
   const [first, second, third, fourth] = code.split('')
+  console.log(code)
 
   return (
     <View style={{ flexDirection: 'row' }}>
@@ -153,6 +154,21 @@ export const Keyboard = ({
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity
           style={[styles.digit, isChecking ? { borderWidth: 0 } : undefined]}
+          onPress={handleRemoveChar}
+          disabled={backSpaceDisabled}
+        >
+          {isChecking ? <KeyboardBackSpace /> : null}
+        </TouchableOpacity>
+
+        <Digit key={0} value="0" onPress={handleKeyPress} disabled={disabled} />
+
+        <TouchableOpacity style={styles.digit} disabled={applyDisabled} onPress={handleApply}>
+          {biometric ? <TouchIcon size={60} fill="rgba(255,255,255,0.5)" /> : <KeyboardApply />}
+        </TouchableOpacity>
+      </View>
+      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <TouchableOpacity
+          style={[styles.digit, isChecking ? { borderWidth: 0 } : undefined]}
           onPress={isChecking ? handleForgot : handleRemoveChar}
           disabled={!isChecking && backSpaceDisabled}
         >
@@ -161,12 +177,6 @@ export const Keyboard = ({
           ) : (
             <KeyboardBackSpace />
           )}
-        </TouchableOpacity>
-
-        <Digit key={0} value="0" onPress={handleKeyPress} disabled={disabled} />
-
-        <TouchableOpacity style={styles.digit} disabled={applyDisabled} onPress={handleApply}>
-          {biometric ? <TouchIcon size={60} fill="rgba(255,255,255,0.5)" /> : <KeyboardApply />}
         </TouchableOpacity>
       </View>
     </View>
